@@ -27,9 +27,7 @@
 
 2. **Setup Firebase**
    - Create project at [Firebase Console](https://console.firebase.google.com)
-   - Add your app and download config files
-   - Enable Authentication & Firestore
-   - Uncomment Firebase initialization in `main.dart`
+   - Add your app
 
 3. **Run**
    ```bash
