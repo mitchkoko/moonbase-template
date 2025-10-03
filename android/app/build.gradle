@@ -1,3 +1,27 @@
+def getVersionName() {
+    def pubspecFile = rootProject.file("../pubspec.yaml")
+    if (pubspecFile.exists()) {
+        def pubspecContent = pubspecFile.text
+        def matcher = pubspecContent =~ /version: (\d+\.\d+\.\d+)\+(\d+)/
+        if (matcher.find()) {
+            return matcher.group(1)
+        }
+    }
+    return "1.0"
+}
+
+def getVersionCode() {
+    def pubspecFile = rootProject.file("../pubspec.yaml")
+    if (pubspecFile.exists()) {
+        def pubspecContent = pubspecFile.text
+        def matcher = pubspecContent =~ /version: (\d+\.\d+\.\d+)\+(\d+)/
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(2))
+        }
+    }
+    return 1
+}
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -7,7 +31,7 @@ plugins {
 
 android {
     namespace = "com.example.moonbase"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -24,10 +48,11 @@ android {
         applicationId = "com.example.moonbase"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 23
+        targetSdk = 35
+        ndkVersion "26.1.10909125"
+        versionCode getVersionCode()
+        versionName getVersionName()
     }
 
     buildTypes {

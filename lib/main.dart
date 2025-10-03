@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:time_tracker_app/home_widget_logic.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker_app/home_widget_logic.dart';
 import 'package:time_tracker_app/models/time_entry.dart';
 import 'package:time_tracker_app/screens/home_page.dart';
 import 'package:time_tracker_app/services/timer_service.dart';

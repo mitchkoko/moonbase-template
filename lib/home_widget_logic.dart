@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:time_tracker_app/models/time_entry.dart';
@@ -7,15 +6,19 @@ const String appGroupId = 'group.com.example.time_tracker';
 const String iOSWidgetName = 'TimeTrackerWidget';
 const String androidWidgetName = 'TimeTrackerWidget';
 
+@pragma('vm:entry-point')
 void backgroundCallback(Uri? uri) async {
   if (uri?.host == 'start_stop_widget') {
-    // This function is called from the background isolate, so we need to
-    // initialize Hive again.
-    await Hive.initFlutter('hive_background');
-    Hive.registerAdapter(TimeEntryAdapter());
-    final commandBox = await Hive.openBox('widget_commands');
-    commandBox.put('command', 'toggle');
-    commandBox.close();
+    final hivePath = await HomeWidget.getWidgetData<String>('hive_path');
+    if (hivePath != null) {
+      Hive.init(hivePath);
+      if (!Hive.isAdapterRegistered(TimeEntryAdapter().typeId)) {
+        Hive.registerAdapter(TimeEntryAdapter());
+      }
+      final commandBox = await Hive.openBox('widget_commands');
+      await commandBox.put('command', 'toggle');
+      await commandBox.close();
+    }
   }
 }
 
@@ -26,7 +29,7 @@ class HomeWidgetLogic {
   }
 
   static Future<void> updateWidget() async {
-    return HomeWidget.updateWidget(
+    await HomeWidget.updateWidget(
       name: androidWidgetName,
       iOSName: iOSWidgetName,
     );
